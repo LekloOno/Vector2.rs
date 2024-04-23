@@ -55,6 +55,17 @@ pub mod vector2 {
             self.vector.magnitude = magnitude_of(&self.vector);
         }
     }
+
+    impl Add for Vector2 {
+        type Output = Vector2;
+
+        fn add(self, other: Self) -> Self {
+            Vector2::new(
+                self.x() + other.x(),
+                self.y() + other.y()
+            )
+        }
+    }
 }
 
 #[cfg(test)]
@@ -94,5 +105,14 @@ mod tests {
         let mut vec1 = Vector2::new(1., 4.);
         vec1.set_x(3.);
         assert_eq!(5., vec1.magnitude());
+    }
+
+    #[test]
+    fn vector2_should_implement_add() {
+        let vec1 = Vector2::new(1., 2.);
+        let vec2 = Vector2::new(2., 3.);
+        let vec3 = vec1 + vec2;
+        assert_eq!(3., vec3.x());
+        assert_eq!(5., vec3.y());
     }
 }
