@@ -69,7 +69,10 @@ pub mod vector2 {
 
     impl AddAssign for Vector2 {
         fn add_assign(&mut self, other: Self) {
-
+            *self = Vector2::new(
+                self.x() + other.x(),
+                self.y() + other.y()
+            );
         }
     }
 }
