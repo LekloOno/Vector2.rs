@@ -76,6 +76,17 @@ pub mod vector2 {
         }
     }
 
+    impl Sub for Vector2 {
+        type Output = Self;
+
+        fn sub(self, other: Self) -> Self {
+            Vector2::new(
+                self.x() - other.x(),
+                self.y() - other.y()
+            )
+        }
+    }
+
     impl Div<f32> for Vector2 {
         type Output = Self;
 
@@ -212,6 +223,15 @@ mod tests {
         vec1 += vec2;
         assert_eq!(3., vec1.x());
         assert_eq!(5., vec1.y());
+    }
+
+    #[test]
+    fn vector2_should_implement_sub() {
+        let mut vec1 = Vector2::new(2., 4.);
+        let vec2 = Vector2::new(1., 2.);
+        vec1 = vec1 - vec2;
+        assert_eq!(1., vec1.x());
+        assert_eq!(2., vec1.y());
     }
 
     #[test]
