@@ -75,6 +75,17 @@ pub mod vector2 {
             );
         }
     }
+
+    impl Div<f32> for Vector2 {
+        type Output = Self;
+
+        fn div(self, k: f32) -> Self {
+            Vector2::new(
+                0.,
+                0.
+            )
+        }
+    }
 }
 
 #[cfg(test)]
@@ -132,5 +143,13 @@ mod tests {
         vec1 += vec2;
         assert_eq!(3., vec1.x());
         assert_eq!(5., vec1.y());
+    }
+
+    #[test]
+    fn vector2_should_implement_k_div() {
+        let vec1 = Vector2::new(4., 2.);
+        let vec2 = vec1 / 2.;
+        assert_eq!(2., vec2.x());
+        assert_eq!(1., vec2.y());
     }
 }
