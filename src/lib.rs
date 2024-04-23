@@ -81,8 +81,8 @@ pub mod vector2 {
 
         fn div(self, k: f32) -> Self {
             Vector2::new(
-                0.,
-                0.
+                self.x() / k,
+                self.y() / k
             )
         }
     }
