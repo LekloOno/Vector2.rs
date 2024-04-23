@@ -115,6 +115,17 @@ pub mod vector2 {
             );
         }
     }
+
+    impl Mul<f32> for Vector2 {
+        type Output = Self;
+
+        fn mul(self, k: f32) -> Self {
+            Vector2::new(
+                self.x() * k,
+                self.y() * k
+            )
+        }
+    }
 }
 
 #[cfg(test)]
@@ -206,5 +217,13 @@ mod tests {
         vec1 /= vec2;
         assert_eq!(2., vec1.x());
         assert_eq!(0.5, vec1.y());
+    }
+
+    #[test]
+    fn vector2_should_implement_k_mul() {
+        let mut vec1 = Vector2::new(4., 2.);
+        vec1 = vec1 * 3.;
+        assert_eq!(12., vec1.x());
+        assert_eq!(6., vec1.y());
     }
 }
