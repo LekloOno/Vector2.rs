@@ -66,6 +66,12 @@ pub mod vector2 {
             )
         }
     }
+
+    impl AddAssign for Vector2 {
+        fn add_assign(&mut self, other: Self) {
+
+        }
+    }
 }
 
 #[cfg(test)]
@@ -114,5 +120,14 @@ mod tests {
         let vec3 = vec1 + vec2;
         assert_eq!(3., vec3.x());
         assert_eq!(5., vec3.y());
+    }
+
+    #[test]
+    fn vector2_should_implement_add_assign() {
+        let mut vec1 = Vector2::new(1., 2.);
+        let vec2 = Vector2::new(2., 3.);
+        vec1 += vec2;
+        assert_eq!(3., vec1.x());
+        assert_eq!(5., vec1.y());
     }
 }
