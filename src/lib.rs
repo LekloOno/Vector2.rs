@@ -126,6 +126,17 @@ pub mod vector2 {
             )
         }
     }
+
+    impl Mul for Vector2 {
+        type Output = Self;
+        
+        fn mul(self, other: Self) -> Self {
+            Vector2::new(
+                self.x() * other.x(),
+                self.y() * other.y()
+            )
+        }
+    }
 }
 
 #[cfg(test)]
@@ -224,6 +235,15 @@ mod tests {
         let mut vec1 = Vector2::new(4., 2.);
         vec1 = vec1 * 3.;
         assert_eq!(12., vec1.x());
+        assert_eq!(6., vec1.y());
+    }
+
+    #[test]
+    fn vector2_should_implement_vec_mul() {
+        let mut vec1 = Vector2::new(4., 2.);
+        let vec2 = Vector2::new(2., 3.);
+        vec1 = vec1 * vec2;
+        assert_eq!(8., vec1.x());
         assert_eq!(6., vec1.y());
     }
 }
