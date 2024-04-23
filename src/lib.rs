@@ -137,6 +137,15 @@ pub mod vector2 {
             )
         }
     }
+
+    impl MulAssign<f32> for Vector2 {
+        fn mul_assign(&mut self, k: f32) {
+            *self = Vector2::new(
+                self.x() * k,
+                self.y() * k
+            );
+        }
+    }
 }
 
 #[cfg(test)]
@@ -244,6 +253,14 @@ mod tests {
         let vec2 = Vector2::new(2., 3.);
         vec1 = vec1 * vec2;
         assert_eq!(8., vec1.x());
+        assert_eq!(6., vec1.y());
+    }
+
+    #[test]
+    fn vector2_should_implement_k_mul_assign() {
+        let mut vec1 = Vector2::new(4., 2.);
+        vec1 *= 3.;
+        assert_eq!(12., vec1.x());
         assert_eq!(6., vec1.y());
     }
 }
