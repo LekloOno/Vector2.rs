@@ -9,6 +9,7 @@ pub mod vector2 {
         (x.powf(2.) + y.powf(2.)).sqrt()
     }
 
+    #[derive(Debug, Copy, Clone, PartialEq)]
     pub struct Vector2data {
         pub x: f32,
         pub y: f32,
@@ -22,7 +23,8 @@ pub mod vector2 {
             vec
         }
     }
-
+    
+    #[derive(Debug, Copy, Clone, PartialEq)]
     pub struct Vector2 {
         vector: Vector2data,
     }
@@ -318,5 +320,14 @@ mod tests {
         vec1 *= vec2;
         assert_eq!(8., vec1.x());
         assert_eq!(6., vec1.y());
+    }
+
+    #[test]
+    fn vector2_should_implement_partial_eq() {
+        let vec1 = Vector2::new(4., 2.);
+        let vec2 = Vector2::new(4., 2.);
+        let vec3 = Vector2::new(2., 4.);
+        assert_eq!(vec1, vec2);
+        assert_ne!(vec1, vec3);
     }
 }
