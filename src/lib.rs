@@ -97,6 +97,15 @@ pub mod vector2 {
             )
         }
     }
+
+    impl DivAssign<f32> for Vector2 {
+        fn div_assign(&mut self, k: f32) {
+            *self = Vector2::new(
+                self.x() / k,
+                self.y() / k
+            );
+        }
+    }
 }
 
 #[cfg(test)]
@@ -171,5 +180,13 @@ mod tests {
         let vec3 = vec1 / vec2;
         assert_eq!(2., vec3.x());
         assert_eq!(0.5, vec3.y());
+    }
+
+    #[test]
+    fn vector2_should_implement_k_div_assign() {
+        let mut vec1 = Vector2::new(4., 2.);
+        vec1 /= 2.;
+        assert_eq!(2., vec1.x());
+        assert_eq!(1., vec1.y());
     }
 }
