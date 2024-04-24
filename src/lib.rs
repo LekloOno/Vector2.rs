@@ -1,5 +1,6 @@
 pub mod vector2 {
     use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
+    use std::f32::consts::PI;
 
     fn magnitude_of(vector: &Vector2data) -> f32 {
         magnitude(vector.x, vector.y)
@@ -78,6 +79,13 @@ pub mod vector2 {
             if mg_base == 0. { return 0.; }
 
             (self.x()*other.y() - self.y()*other.x()).atan2(self.x()*other.x() + self.y()*other.y())
+        }
+
+        pub fn wide_angle(&self, other: &Self) -> f32 {
+            let mg_base = self.magnitude() * other.magnitude();
+            if mg_base == 0. { return 0.; }
+
+            (self.x()*other.y() - self.y()*other.x()).atan2(self.x()*other.x() + self.y()*other.y()).rem_euclid(2.*PI)
         }
 
         pub fn distance(&self, other: &Self) -> f32 {
@@ -507,6 +515,7 @@ mod tests {
     //  Vector2 Implements :
     //  - distance      (Self, Self) -> f32
     //  - direction     (Self, Self) -> Self
+    //  - wide_angle    (Self, Self) -> f32
     //  - to_angle      (Self) -> f32
     
     fn test_distance_procedure(vec1: Vector2, vec2: Vector2, expected_distance: f32) {
@@ -543,6 +552,19 @@ mod tests {
             Vector2::new(3., 2.),
             Vector2::new(expected_component, expected_component)
         );
+    }
+
+    #[test]
+    fn vector2_should_implement_wide_angle() {
+        let vec1 = Vector2::new(1., 0.);
+        let vec2 = Vector2::new(0., 1.);
+        assert_eq!(PI/2., vec1.wide_angle(&vec2));
+
+        let vec2 = Vector2::new(0., -1.);
+        assert_eq!(3.*PI/2., vec1.wide_angle(&vec2));
+
+        let vec2 = Vector2::new(-1., 0.);
+        assert_eq!(PI, vec1.wide_angle(&vec2));
     }
 
     //  ______________________
