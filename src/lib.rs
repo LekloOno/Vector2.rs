@@ -213,6 +213,14 @@ mod tests {
         );
     }
 
+    //  _____________________
+    //  
+    //  BASIC BEHAVIORS TESTS
+    //  _____________________
+    //  Vector2 implements :
+    //  - vector components datas encapsulation
+    //  - vector magnitude "propertization"
+
     #[test]
     fn vector2_should_contain_the_right_data() {
         let vec1 = Vector2::new(1., 2.);
@@ -247,6 +255,17 @@ mod tests {
         vec1.set_x(3.);
         assert_eq!(5., vec1.magnitude());
     }
+
+    //  ____________________
+    //
+    //  TESTS OVER OPERATORS
+    //  ____________________
+    //  Vector2 Implements :
+    //  - Add, AddAssign    (Self, Self)
+    //  - Sub, SubAssign    (Self, Self)
+    //  - Div, DivAssign    (Self, Self), (Self, f32)
+    //  - Mul, MulAssign    (Self, Self), (Self, f32)
+    //  - PartialEq         - Derived
 
     #[test]
     fn vector2_should_implement_add() {
@@ -361,6 +380,16 @@ mod tests {
         assert_ne!(vec1, vec3);
     }
 
+    //  _____________________
+    //  
+    //  TESTS OVER CORE TOOLS
+    //  _____________________
+    //  Vector2 Implements :
+    //  - normalized        (Self) -> Self
+    //  - dot_product       (Self, Self) -> f32
+    //  - angle             (Self, Self) -> f32
+    //  - projected_on      (Self, Self) -> Self
+
     #[test]
     fn vector2_should_implement_normalized() {
         let mut vec1 = Vector2::new(950., 0.);
@@ -382,7 +411,17 @@ mod tests {
         assert_approx_eq(1., &vec1.magnitude(), TEST_DELTA);
     }
 
-    fn test_distance_quick_hand(vec1: Vector2, vec2: Vector2, expected_distance: f32) {
+    
+    //  ___________________________
+    //
+    //  TESTS OVER QUICK HAND TOOLS
+    //  ___________________________
+    //  Vector2 Implements :
+    //  - distance      (Self, Self) -> f32
+    //  - direction     (Self, Self) -> Self
+    //  - to_angle      (Self) -> f32
+    
+    fn test_distance_procedure(vec1: Vector2, vec2: Vector2, expected_distance: f32) {
         let distance_from_vec1 = vec1.distance(&vec2);
         let distance_from_vec2 = vec2.distance(&vec1);
         assert_eq!(distance_from_vec1, distance_from_vec2);
@@ -391,7 +430,15 @@ mod tests {
 
     #[test]
     fn vector2_should_implement_distance() {
-        test_distance_quick_hand(Vector2::new(0., 0.), Vector2::new(1., 0.), 1.);
-        test_distance_quick_hand(Vector2::new(2., -4.), Vector2::new(-1., 0.), 5.);
+        test_distance_procedure(Vector2::new(0., 0.), Vector2::new(1., 0.), 1.);
+        test_distance_procedure(Vector2::new(2., -4.), Vector2::new(-1., 0.), 5.);
     }
+
+    //  ______________________
+    //  
+    //  TESTS OVER MORPH TOOLS
+    //  ______________________
+    //  Vector2 Implements :
+    //  - normalize     (Self)
+    //  - project_on    (Self, Self)
 }
