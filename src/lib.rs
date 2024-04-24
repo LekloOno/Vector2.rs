@@ -103,6 +103,10 @@ pub mod vector2 {
         pub fn to_angle(&self) -> f32 {
             self.y().atan2(self.x())
         }
+
+        pub fn normalize(&mut self) {
+            *self = self.normalized();
+        }
     }
 
     impl Add for Vector2 {
@@ -610,4 +614,21 @@ mod tests {
     //  Vector2 Implements :
     //  - normalize     (Self)
     //  - project_on    (Self, Self)
+
+    #[test]
+    fn vector2_should_implement_normalize() {
+        let mut vec1 = Vector2::new(950., 0.);
+        vec1.normalize();
+
+        assert_eq!(Vector2::new(1., 0.), vec1);
+
+        let mut vec1 = Vector2::new(1., 1.);
+        vec1.normalize();
+        let exepected_xy = 1./(2_f32).sqrt();
+        assert_eq!(Vector2::new(exepected_xy, exepected_xy), vec1);
+
+        let mut vec1 = Vector2::new(26.2, 12.5);
+        vec1.normalize();
+        assert_approx_eq(1., &vec1.magnitude(), TEST_DELTA);
+    }
 }
