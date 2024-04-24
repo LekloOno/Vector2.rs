@@ -66,6 +66,13 @@ pub mod vector2 {
             self.x() * other.x() + self.y() * other.y()
         }
 
+        pub fn angle(&self, other: &Self) -> f32 {
+            let mg_base = self.magnitude() * other.magnitude();
+            if mg_base == 0. { return 0.; }
+            
+            (self.dot_product(other)/mg_base).acos()
+        }
+
         pub fn distance(&self, other: &Self) -> f32 {
             (*self - *other).magnitude()
         }
@@ -199,6 +206,7 @@ pub mod vector2 {
 #[cfg(test)]
 mod tests {
     use super::vector2::Vector2;
+    use std::f32::consts::PI;
 
     const TEST_DELTA: f32 = 0.0001;
 
@@ -451,6 +459,23 @@ mod tests {
             Vector2::new(1., 1.),
             30.
         );
+    }
+
+    #[test]
+    fn vector2_should_implement_angle() {
+        let vec1 = Vector2::new(1., 0.);
+        let vec2 = Vector2::new(0., 1.);
+        assert_eq!(PI/2., vec1.angle(&vec2));
+
+        let vec2 = Vector2::new(0., -1.);
+        assert_eq!(PI/2., vec1.angle(&vec2));
+
+        let vec2 = Vector2::new(-1., 0.);
+        assert_eq!(PI, vec1.angle(&vec2));
+
+        let slope_component = (1./2_f32).sqrt();
+        let vec2 = Vector2::new(slope_component, slope_component);
+        assert_approx_eq(PI/4., &vec1.angle(&vec2), TEST_DELTA);
     }
 
     
