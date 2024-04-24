@@ -65,6 +65,10 @@ pub mod vector2 {
         pub fn distance(&self, other: &Self) -> f32 {
             (*self - *other).magnitude()
         }
+
+        pub fn direction(&self, other: &Self) -> Self {
+            (*other - *self).normalized()
+        }
     }
 
     impl Add for Vector2 {
@@ -432,6 +436,29 @@ mod tests {
     fn vector2_should_implement_distance() {
         test_distance_procedure(Vector2::new(0., 0.), Vector2::new(1., 0.), 1.);
         test_distance_procedure(Vector2::new(2., -4.), Vector2::new(-1., 0.), 5.);
+    }
+
+    fn test_direction_procedure(vec1: Vector2, vec2: Vector2, expected_direction: Vector2) {
+        assert_eq!(expected_direction, vec1.direction(&vec2));
+        let neg_direction = Vector2::new(-expected_direction.x(), -expected_direction.y());
+        assert_eq!(neg_direction, vec2.direction(&vec1));
+    }
+
+    #[test]
+    fn vector2_should_implement_direction() {
+        test_direction_procedure(
+            Vector2::new(10., 15.),
+            Vector2::new(10., 25.),
+            Vector2::new(0., 1.)
+        );
+
+        
+        let expected_component = 1./2_f32.sqrt();
+        test_direction_procedure(
+            Vector2::new(1., 0.),
+            Vector2::new(3., 2.),
+            Vector2::new(expected_component, expected_component)
+        );
     }
 
     //  ______________________
