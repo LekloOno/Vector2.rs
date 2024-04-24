@@ -99,6 +99,10 @@ pub mod vector2 {
         pub fn direction(&self, other: &Self) -> Self {
             (*other - *self).normalized()
         }
+
+        pub fn to_angle(&self) -> f32 {
+            self.y().atan2(self.x())
+        }
     }
 
     impl Add for Vector2 {
@@ -582,6 +586,21 @@ mod tests {
 
         let vec2 = Vector2::new(-1., 0.);
         assert_eq!(PI, vec1.wide_angle(&vec2));
+    }
+
+    #[test]
+    fn vector2_should_implement_to_angle() {
+        let vec1 = Vector2::new(1., 0.);
+        assert_eq!(0., vec1.to_angle());
+
+        let vec1 = Vector2::new(0., 1.);
+        assert_eq!(PI/2., vec1.to_angle());
+
+        let vec1 = Vector2::new(0., -1.);
+        assert_eq!(-PI/2., vec1.to_angle());
+
+        let vec1 = Vector2::new(-1., 1.);
+        assert_eq!(3.*PI/4., vec1.to_angle());
     }
 
     //  ______________________
