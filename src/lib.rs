@@ -56,6 +56,11 @@ pub mod vector2 {
             self.vector.y = y;
             self.vector.magnitude = magnitude_of(&self.vector);
         }
+
+        pub fn normalized(&self) -> Vector2 {
+            if self.magnitude() == 0. { Vector2::new(0., 0.) }
+            else { Vector2::new(self.x()/self.magnitude(), self.y()/self.magnitude()) } 
+        }
     }
 
     impl Add for Vector2 {
@@ -182,6 +187,25 @@ pub mod vector2 {
 #[cfg(test)]
 mod tests {
     use super::vector2::Vector2;
+
+    fn assert_approx_eq(expected: f32, actual: &f32, delta: f32) {
+        let delta = delta.abs();
+        let bound = expected+delta;
+        assert!(
+            *actual < bound,
+            "Value did not match expected precision : Exceeded _max_ bound\n-->\t(Value {}   >   Bound {})",
+            *actual,
+            bound
+        );
+
+        let bound = expected-delta;
+        assert!(
+            *actual > bound,
+            "Value did not match expected precision : Exceeded _min_ bound\n-->\t(Value {}   <   Bound {})",
+            *actual,
+            bound
+        );
+    }
 
     #[test]
     fn vector2_should_contain_the_right_data() {
@@ -329,5 +353,26 @@ mod tests {
         let vec3 = Vector2::new(2., 4.);
         assert_eq!(vec1, vec2);
         assert_ne!(vec1, vec3);
+    }
+
+    #[test]
+    fn vector2_should_implement_normalized() {
+        let mut vec1 = Vector2::new(950., 0.);
+        vec1 = vec1.normalized();
+
+        assert_eq!(1., vec1.x());
+        assert_eq!(0., vec1.y());
+        assert_approx_eq(1., &vec1.magnitude(), 0.00001);
+
+        let mut vec1 = Vector2::new(1., 1.);
+        vec1 = vec1.normalized();
+        let exepected_xy = 1./(2_f32).sqrt();
+        assert_eq!(exepected_xy, vec1.x());
+        assert_eq!(exepected_xy, vec1.y());
+        assert_approx_eq(1., &vec1.magnitude(), 0.00001);
+
+        let mut vec1 = Vector2::new(26.2, 12.5);
+        vec1 = vec1.normalized();
+        assert_approx_eq(1., &vec1.magnitude(), 0.00001);
     }
 }
