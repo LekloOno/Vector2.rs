@@ -57,9 +57,13 @@ pub mod vector2 {
             self.vector.magnitude = magnitude_of(&self.vector);
         }
 
-        pub fn normalized(&self) -> Vector2 {
+        pub fn normalized(&self) -> Self {
             if self.magnitude() == 0. { Vector2::new(0., 0.) }
             else { Vector2::new(self.x()/self.magnitude(), self.y()/self.magnitude()) } 
+        }
+
+        pub fn distance(&self, other: &Self) -> f32 {
+            (*self - *other).magnitude()
         }
     }
 
@@ -187,6 +191,8 @@ pub mod vector2 {
 #[cfg(test)]
 mod tests {
     use super::vector2::Vector2;
+
+    const TEST_DELTA: f32 = 0.0001;
 
     fn assert_approx_eq(expected: f32, actual: &f32, delta: f32) {
         let delta = delta.abs();
@@ -362,17 +368,30 @@ mod tests {
 
         assert_eq!(1., vec1.x());
         assert_eq!(0., vec1.y());
-        assert_approx_eq(1., &vec1.magnitude(), 0.00001);
+        assert_approx_eq(1., &vec1.magnitude(), TEST_DELTA);
 
         let mut vec1 = Vector2::new(1., 1.);
         vec1 = vec1.normalized();
         let exepected_xy = 1./(2_f32).sqrt();
         assert_eq!(exepected_xy, vec1.x());
         assert_eq!(exepected_xy, vec1.y());
-        assert_approx_eq(1., &vec1.magnitude(), 0.00001);
+        assert_approx_eq(1., &vec1.magnitude(), TEST_DELTA);
 
         let mut vec1 = Vector2::new(26.2, 12.5);
         vec1 = vec1.normalized();
-        assert_approx_eq(1., &vec1.magnitude(), 0.00001);
+        assert_approx_eq(1., &vec1.magnitude(), TEST_DELTA);
+    }
+
+    fn test_distance_quick_hand(vec1: Vector2, vec2: Vector2, expected_distance: f32) {
+        let distance_from_vec1 = vec1.distance(&vec2);
+        let distance_from_vec2 = vec2.distance(&vec1);
+        assert_eq!(distance_from_vec1, distance_from_vec2);
+        assert_approx_eq(expected_distance, &distance_from_vec1, TEST_DELTA);
+    }
+
+    #[test]
+    fn vector2_should_implement_distance() {
+        test_distance_quick_hand(Vector2::new(0., 0.), Vector2::new(1., 0.), 1.);
+        test_distance_quick_hand(Vector2::new(2., -4.), Vector2::new(-1., 0.), 5.);
     }
 }
