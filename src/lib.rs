@@ -67,6 +67,10 @@ pub mod vector2 {
             self.x() * other.x() + self.y() * other.y()
         }
 
+        pub fn determinent(&self, other: &Self) -> f32 {
+            self.x() * other.y() - self.y() * other.x()
+        }
+
         pub fn angle(&self, other: &Self) -> f32 {
             let mg_base = self.magnitude() * other.magnitude();
             if mg_base == 0. { return 0.; }
@@ -418,6 +422,7 @@ mod tests {
     //  Vector2 Implements :
     //  - normalized        (Self) -> Self
     //  - dot_product       (Self, Self) -> f32
+    //  - determinent       (Self, Self) -> f32
     //  - angle             (Self, Self) -> f32
     //  - signed_angle      (Self, Self) -> f32
     //  - projected_on      (Self, Self) -> Self
@@ -477,6 +482,18 @@ mod tests {
         );
     }
 
+    fn test_determinent_procedure(vec1: Vector2, vec2: Vector2, expected_area: f32){
+        assert_approx_eq(expected_area, &vec1.determinent(&vec2), TEST_DELTA);
+        assert_approx_eq(-expected_area, &vec2.determinent(&vec1), TEST_DELTA);
+    }
+
+    #[test]
+    fn vector2_should_implement_determinent() {
+        test_determinent_procedure(Vector2::new(1., 0.), Vector2::new(0., 0.), 0.);
+        test_determinent_procedure(Vector2::new(1., 0.), Vector2::new(0., 1.), 1.);
+        test_determinent_procedure(Vector2::new(1., 0.5), Vector2::new(1., -1.), -1.5);
+    }
+
     #[test]
     fn vector2_should_implement_angle() {
         let vec1 = Vector2::new(1., 0.);
@@ -530,7 +547,7 @@ mod tests {
         test_distance_procedure(Vector2::new(0., 0.), Vector2::new(1., 0.), 1.);
         test_distance_procedure(Vector2::new(2., -4.), Vector2::new(-1., 0.), 5.);
     }
-
+    
     fn test_direction_procedure(vec1: Vector2, vec2: Vector2, expected_direction: Vector2) {
         assert_eq!(expected_direction, vec1.direction(&vec2));
         let neg_direction = Vector2::new(-expected_direction.x(), -expected_direction.y());
