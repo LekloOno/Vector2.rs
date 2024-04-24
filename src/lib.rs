@@ -42,21 +42,21 @@ pub mod vector2 {
         pub fn y(&self) -> f32 {
             self.vector.y
         }
-
+        
         pub fn magnitude(&self) -> f32 {
             self.vector.magnitude
         }
-
+        
         pub fn set_x(&mut self, x: f32) {
             self.vector.x = x;
             self.vector.magnitude = magnitude_of(&self.vector);
         }
-
+        
         pub fn set_y(&mut self, y: f32) {
             self.vector.y = y;
             self.vector.magnitude = magnitude_of(&self.vector);
         }
-
+        
         pub fn normalized(&self) -> Self {
             if self.magnitude() == 0. { Vector2::new(0., 0.) }
             else { Vector2::new(self.x()/self.magnitude(), self.y()/self.magnitude()) } 
@@ -71,6 +71,13 @@ pub mod vector2 {
             if mg_base == 0. { return 0.; }
             
             (self.dot_product(other)/mg_base).acos()
+        }
+        
+        pub fn signed_angle(&self, other: &Self) -> f32 {
+            let mg_base = self.magnitude() * other.magnitude();
+            if mg_base == 0. { return 0.; }
+
+            (self.x()*other.y() - self.y()*other.x()).atan2(self.x()*other.x() + self.y()*other.y())
         }
 
         pub fn distance(&self, other: &Self) -> f32 {
@@ -404,6 +411,7 @@ mod tests {
     //  - normalized        (Self) -> Self
     //  - dot_product       (Self, Self) -> f32
     //  - angle             (Self, Self) -> f32
+    //  - signed_angle      (Self, Self) -> f32
     //  - projected_on      (Self, Self) -> Self
 
     #[test]
@@ -476,6 +484,19 @@ mod tests {
         let slope_component = (1./2_f32).sqrt();
         let vec2 = Vector2::new(slope_component, slope_component);
         assert_approx_eq(PI/4., &vec1.angle(&vec2), TEST_DELTA);
+    }
+
+    #[test]
+    fn vector2_should_implement_signed_angle() {
+        let vec1 = Vector2::new(1., 0.);
+        let vec2 = Vector2::new(0., 1.);
+        assert_eq!(PI/2., vec1.signed_angle(&vec2));
+
+        let vec2 = Vector2::new(0., -1.);
+        assert_eq!(-PI/2., vec1.signed_angle(&vec2));
+
+        let vec2 = Vector2::new(-1., 0.);
+        assert_eq!(PI, vec1.signed_angle(&vec2));
     }
 
     
