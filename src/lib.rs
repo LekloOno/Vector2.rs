@@ -61,6 +61,10 @@ pub mod vector2 {
             if self.magnitude() == 0. { Vector2::new(0., 0.) }
             else { Vector2::new(self.x()/self.magnitude(), self.y()/self.magnitude()) } 
         }
+        
+        pub fn dot_product(&self, other: &Self) -> f32 {
+            self.x() * other.x() + self.y() * other.y()
+        }
 
         pub fn distance(&self, other: &Self) -> f32 {
             (*self - *other).magnitude()
@@ -413,6 +417,40 @@ mod tests {
         let mut vec1 = Vector2::new(26.2, 12.5);
         vec1 = vec1.normalized();
         assert_approx_eq(1., &vec1.magnitude(), TEST_DELTA);
+    }
+
+    fn test_dot_product_procedure(vec1: Vector2, vec2: Vector2, expected_prod: f32) {
+        let vec1prod = vec1.dot_product(&vec2);
+        let vec2prod = vec2.dot_product(&vec1);
+        assert_eq!(vec1prod, vec2prod);
+        assert_eq!(vec1prod, expected_prod);
+    }
+
+    #[test]
+    fn vector2_should_implement_dot_product() {
+        test_dot_product_procedure(
+            Vector2::new(1., 0.),
+            Vector2::new(0., 1.),
+            0.
+        );
+
+        test_dot_product_procedure(
+            Vector2::new(5., 25.),
+            Vector2::new(1., 0.),
+            5.
+        );
+
+        test_dot_product_procedure(
+            Vector2::new(5., 25.),
+            Vector2::new(-1., 0.),
+            -5.
+        );
+
+        test_dot_product_procedure(
+            Vector2::new(5., 25.),
+            Vector2::new(1., 1.),
+            30.
+        );
     }
 
     
