@@ -85,7 +85,47 @@ pub mod self_ops {
 
 pub mod k_ops {
     use crate::vector2::Vector2;
-    use std::ops::{Div, DivAssign, Mul, MulAssign};
+    use std::ops::{Add, AddAssign, Sub, SubAssign, Div, DivAssign, Mul, MulAssign};
+
+    impl Sub<f32> for Vector2 {
+        type Output = Self;
+    
+        fn sub(self, k: f32) -> Self {
+            Vector2::new(
+                self.x() - k,
+                self.y() - k
+            )
+        }
+    }
+
+    impl SubAssign<f32> for Vector2 {    
+        fn sub_assign(&mut self, k: f32) {
+            *self = Vector2::new(
+                self.x() - k,
+                self.y() - k
+            );
+        }
+    }
+
+    impl Add<f32> for Vector2 {
+        type Output = Self;
+    
+        fn add(self, k: f32) -> Self {
+            Vector2::new(
+                self.x() + k,
+                self.y() + k
+            )
+        }
+    }
+
+    impl AddAssign<f32> for Vector2 {    
+        fn add_assign(&mut self, k: f32) {
+            *self = Vector2::new(
+                self.x() + k,
+                self.y() + k
+            );
+        }
+    }
 
     impl Div<f32> for Vector2 {
         type Output = Self;
