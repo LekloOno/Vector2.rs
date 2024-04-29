@@ -2,7 +2,7 @@ pub mod extended_ops {
     use crate::vector2::Vector2;
 
     impl Vector2 {
-        pub fn dot_product(&self, other: &Self) -> f32 {
+        pub fn dot(&self, other: &Self) -> f32 {
             self.x() * other.x() + self.y() * other.y()
         }
         
@@ -25,7 +25,7 @@ pub mod geometry {
             let mg_base = self.magnitude() * other.magnitude();
             if mg_base == 0. { return 0.; }
             
-            (self.dot_product(other)/mg_base).acos()
+            (self.dot(other)/mg_base).acos()
         }
         
         pub fn signed_angle(&self, other: &Self) -> f32 {
@@ -78,8 +78,8 @@ mod tests {
     }
 
     fn test_dot_product_procedure(vec1: Vector2, vec2: Vector2, expected_prod: f32) {
-        let vec1prod = vec1.dot_product(&vec2);
-        let vec2prod = vec2.dot_product(&vec1);
+        let vec1prod = vec1.dot(&vec2);
+        let vec2prod = vec2.dot(&vec1);
         assert_eq!(vec1prod, vec2prod);
         assert_eq!(vec1prod, expected_prod);
     }
