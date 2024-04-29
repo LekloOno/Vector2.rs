@@ -29,6 +29,10 @@ pub mod quick_hand {
         pub fn fract(&self) -> Self {
             Vector2::new(self.x().fract(), self.y().fract())
         }
+
+        pub fn rem_euclid(&self, n: f32) -> Self {
+            Vector2::new(self.x().rem_euclid(n), self.y().rem_euclid(n))
+        }
     }
 }
 
@@ -133,5 +137,14 @@ mod tests {
         let vec1 = vec1.fract();
         test_tools::assert_approx_eq!(0.7 , &vec1.x());
         test_tools::assert_approx_eq!(0.54, &vec1.y());
+    }
+
+    #[test]
+    fn vecotor2_should_implement_rem_euclid(){
+        let vec1 = Vector2::new(7., 2.);
+        assert_eq!(Vector2::new(3., 2.), vec1.rem_euclid(4.));
+
+        let vec1 = Vector2::new(-7., -2.);
+        assert_eq!(Vector2::new(1., 2.), vec1.rem_euclid(4.));
     }
 }
