@@ -105,7 +105,7 @@ pub mod self_ops {
 
 pub mod k_ops {
     use crate::vector2::Vector2;
-    use std::ops::{Add, AddAssign, Sub, SubAssign, Div, DivAssign, Mul, MulAssign};
+    use std::ops::{Add, AddAssign, Sub, SubAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign};
 
     impl Sub<f32> for Vector2 {
         type Output = Self;
@@ -183,6 +183,26 @@ pub mod k_ops {
             *self = Vector2::new(
                 self.x() * k,
                 self.y() * k
+            );
+        }
+    }
+
+    impl Rem<f32> for Vector2 {
+        type Output = Self;
+
+        fn rem(self, k: f32) -> Self {
+            Vector2::new(
+                self.x() % k,
+                self.y() % k
+            )
+        }
+    }
+
+    impl RemAssign<f32> for Vector2 {
+        fn rem_assign(&mut self, k: f32) {
+            *self = Vector2::new(
+                self.x() % k,
+                self.y() % k
             );
         }
     }
@@ -367,6 +387,26 @@ mod tests {
 
         let mut vec1 = Vector2::new(-1., -7.);
         vec1 %= Vector2::new(3., 2.);
+        assert_eq!(vec1, Vector2::new(-1., -1.));
+    }
+
+    #[test]
+    fn vector2_should_implement_k_rem(){
+        let vec1 = Vector2::new(4., 2.);
+        assert_eq!(vec1 % 3., Vector2::new(1., 2.));
+
+        let vec1 = Vector2::new(-1., -7.);
+        assert_eq!(vec1 % 3., Vector2::new(-1., -1.));
+    }
+
+    #[test]
+    fn vector2_should_implement_k_rem_assign(){
+        let mut vec1 = Vector2::new(4., 2.);
+        vec1 %= 3.;
+        assert_eq!(vec1, Vector2::new(1., 2.));
+
+        let mut vec1 = Vector2::new(-1., -7.);
+        vec1 %= 3.;
         assert_eq!(vec1, Vector2::new(-1., -1.));
     }
 }
