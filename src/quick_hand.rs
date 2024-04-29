@@ -21,6 +21,10 @@ pub mod quick_hand {
         pub fn to_angle(&self) -> f32 {
             self.y().atan2(self.x())
         }
+
+        pub fn abs(&self) -> Self {
+            Vector2::new(self.x().abs(), self.y().abs())
+        }
     }
 }
 
@@ -102,5 +106,20 @@ mod tests {
 
         let vec1 = Vector2::new(-1., 1.);
         assert_eq!(3.*PI/4., vec1.to_angle());
+    }
+
+    #[test]
+    fn vector2_should_implement_abs(){
+        let vec1 = Vector2::new(2., -3.);
+        assert_eq!(vec1.abs(), Vector2::new(2., 3.));
+
+        let vec1 = Vector2::new(-2., 3.);
+        assert_eq!(vec1.abs(), Vector2::new(2., 3.));
+
+        let vec1 = Vector2::new(-2., -3.);
+        assert_eq!(vec1.abs(), Vector2::new(2., 3.));
+
+        let vec1 = Vector2::new(2., 3.);
+        assert_eq!(vec1.abs(), Vector2::new(2., 3.));
     }
 }
