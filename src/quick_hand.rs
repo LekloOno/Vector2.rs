@@ -25,6 +25,10 @@ pub mod quick_hand {
         pub fn abs(&self) -> Self {
             Vector2::new(self.x().abs(), self.y().abs())
         }
+
+        pub fn fract(&self) -> Self {
+            Vector2::new(self.x().fract(), self.y().fract())
+        }
     }
 }
 
@@ -121,5 +125,13 @@ mod tests {
 
         let vec1 = Vector2::new(2., 3.);
         assert_eq!(vec1.abs(), Vector2::new(2., 3.));
+    }
+
+    #[test]
+    fn vector2_should_implement_fract(){
+        let vec1 = Vector2::new(2.7, 1.54);
+        let vec1 = vec1.fract();
+        test_tools::assert_approx_eq!(0.7 , &vec1.x());
+        test_tools::assert_approx_eq!(0.54, &vec1.y());
     }
 }
