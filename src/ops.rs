@@ -185,6 +185,14 @@ mod tests {
     use crate::vector2::Vector2;
     
     #[test]
+    fn vector2_should_implement_k_add() {
+        let mut vec1 = Vector2::new(1., 2.);
+        vec1 = vec1 + 2.;
+        assert_eq!(3., vec1.x());
+        assert_eq!(4., vec1.y());
+    }
+    
+    #[test]
     fn vector2_should_implement_add() {
         let mut vec1 = Vector2::new(1., 2.);
         let vec2 = Vector2::new(2., 3.);
@@ -193,6 +201,14 @@ mod tests {
         assert_eq!(5., vec1.y());
     }
     
+    #[test]
+    fn vector2_should_implement_k_add_assign() {
+        let mut vec1 = Vector2::new(1., 2.);
+        vec1 += 2.;
+        assert_eq!(3., vec1.x());
+        assert_eq!(4., vec1.y());
+    }
+
     #[test]
     fn vector2_should_implement_add_assign() {
         let mut vec1 = Vector2::new(1., 2.);
