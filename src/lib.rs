@@ -1,58 +1,45 @@
 pub mod vector2 {
-    fn magnitude_of(vector: &Vector2data) -> f32 {
+    fn magnitude_of(vector: &Vector2) -> f32 {
         magnitude(vector.x, vector.y)
     }
 
     fn magnitude(x: f32, y: f32) -> f32 {
         (x.powf(2.) + y.powf(2.)).sqrt()
     }
-
-    #[derive(Debug, Copy, Clone, PartialEq)]
-    pub struct Vector2data {
-        pub x: f32,
-        pub y: f32,
-        pub magnitude: f32,
-    }
-
-    impl Vector2data {
-        pub fn new(x: f32, y: f32) -> Vector2data {
-            let magnitude = magnitude(x, y);
-            let vec = Vector2data{x, y, magnitude};
-            vec
-        }
-    }
     
     #[derive(Debug, Copy, Clone, PartialEq)]
     pub struct Vector2 {
-        vector: Vector2data,
+        x: f32,
+        y: f32,
+        magnitude: f32,
     }
 
     impl Vector2 {
         pub fn new(x: f32, y: f32) -> Vector2 {
-            let vector = Vector2data::new(x, y);
-            Vector2{vector}
+            let magnitude = magnitude(x, y);
+            Vector2{x, y, magnitude}
         }
 
         pub fn x(&self) -> f32 {
-            self.vector.x
+            self.x
         }
 
         pub fn y(&self) -> f32 {
-            self.vector.y
+            self.y
         }
         
         pub fn magnitude(&self) -> f32 {
-            self.vector.magnitude
+            self.magnitude
         }
         
         pub fn set_x(&mut self, x: f32) {
-            self.vector.x = x;
-            self.vector.magnitude = magnitude_of(&self.vector);
+            self.x = x;
+            self.magnitude = magnitude_of(&self);
         }
         
         pub fn set_y(&mut self, y: f32) {
-            self.vector.y = y;
-            self.vector.magnitude = magnitude_of(&self.vector);
+            self.y = y;
+            self.magnitude = magnitude_of(&self);
         }
     }
 }
