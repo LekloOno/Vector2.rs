@@ -37,6 +37,13 @@ pub mod quick_hand {
         pub fn floor(&self) -> Self {
             Vector2::new(self.x().floor(), self.y().floor())
         }
+
+        pub fn lerp(&self, other: &Self, t: f32) -> Self {
+            Vector2::new(
+                other.x() * t + self.x() * (1. - t),
+                other.y() * t + self.y() * (1. - t)
+            )
+        }
     }
 }
 
